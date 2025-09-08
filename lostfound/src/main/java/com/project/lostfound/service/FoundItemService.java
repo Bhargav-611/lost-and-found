@@ -81,13 +81,4 @@ public class FoundItemService {
 
         return foundItemRepository.save(existingItem);
     }
-	
-	private String getCurrentLoggedInUsername() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            return ((UserDetails) principal).getUsername();
-        } else {
-            return principal.toString();
-        }
-    }
 }
