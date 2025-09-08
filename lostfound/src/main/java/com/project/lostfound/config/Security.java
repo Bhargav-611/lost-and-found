@@ -46,10 +46,16 @@ public class Security {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST,"/api/users/register").permitAll()
                 
-                .requestMatchers("/api/lost/**").hasAuthority("ROLE_LOST_USER")
-                
-                .requestMatchers("/api/found/**").hasAuthority("ROLE_FOUND_USER")
-                
+                .requestMatchers(HttpMethod.POST, "/api/lost/**").hasAuthority("ROLE_LOST_USER")
+                .requestMatchers(HttpMethod.PUT, "/api/lost/**").hasAuthority("ROLE_LOST_USER")
+                .requestMatchers(HttpMethod.DELETE, "/api/lost/**").hasAuthority("ROLE_LOST_USER")
+                .requestMatchers(HttpMethod.GET, "/api/lost/**").hasAnyAuthority("ROLE_LOST_USER", "ROLE_FOUND_USER") // Both can view/search lost items
+
+                .requestMatchers(HttpMethod.POST, "/api/found/**").hasAuthority("ROLE_FOUND_USER")
+                .requestMatchers(HttpMethod.PUT, "/api/found/**").hasAuthority("ROLE_FOUND_USER")
+                .requestMatchers(HttpMethod.DELETE, "/api/found/**").hasAuthority("ROLE_FOUND_USER")
+                .requestMatchers(HttpMethod.GET, "/api/found/**").hasAnyAuthority("ROLE_LOST_USER", "ROLE_FOUND_USER") // Both can view/search found items
+
                 .requestMatchers(HttpMethod.POST, "/api/claims/create").hasAuthority("ROLE_LOST_USER") // Only lost users can create claims
                 .requestMatchers(HttpMethod.PUT, "/api/claims/{id}/status").hasAuthority("ROLE_FOUND_USER") // Only found users can approve/reject claims
                 .requestMatchers(HttpMethod.DELETE, "/api/claims/{id}").hasAuthority("ROLE_FOUND_USER") // Only found users can delete claims
