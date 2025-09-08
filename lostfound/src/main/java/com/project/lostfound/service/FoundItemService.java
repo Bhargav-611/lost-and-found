@@ -37,7 +37,9 @@ public class FoundItemService {
 	        
 	    
 	        
-	        if (!user.getRoles().getFirst().getName().equals("ROLE_FOUND_USER")) {
+	        if (!user.getRoles()
+                    .stream()
+                    .anyMatch(role -> role.getName().equals("ROLE_FOUND_USER"))) {
 	        	System.out.println(user.getRoles().getFirst().getName());
 	        	throw new RuntimeException("Your are not valid user.");
 	        }

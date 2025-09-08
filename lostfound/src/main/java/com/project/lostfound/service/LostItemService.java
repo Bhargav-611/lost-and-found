@@ -42,7 +42,9 @@ public class LostItemService {
         User user = userRepository.findById(item.getUser().getId())
                                   .orElseThrow(() -> new RuntimeException("User not found"));
         
-        if (!user.getRoles().getFirst().getName().equals("ROLE_LOST_USER")) {
+        if (!user.getRoles()
+                .stream()
+                .anyMatch(role -> role.getName().equals("ROLE_LOST_USER"))) {
         	throw new RuntimeException("Your are not valid user.");
         }
 
